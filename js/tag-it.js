@@ -386,7 +386,7 @@
             return Boolean($.effects && ($.effects[name] || ($.effects.effect && $.effects.effect[name])));
         },
 
-        createTag: function(value, additionalClass, duringInitialization) {
+        createTag: function(value, additionalClass, duringInitialization, textLabel) {
             var that = this;
 
             value = $.trim(value);
@@ -416,8 +416,14 @@
                 this._trigger('onTagLimitExceeded', null, {duringInitialization: duringInitialization});
                 return false;
             }
-
+    		
+			
+			
             var label = $(this.options.onTagClicked ? '<a class="tagit-label"></a>' : '<span class="tagit-label"></span>').text(value);
+			var escapedValue = label.html();
+			
+			textLabel = (typeof(textLabel) != 'undefined') ? textLabel : value;
+			var label = $(this.options.onTagClicked ? '<a class="tagit-label"></a>' : '<span class="tagit-label"></span>').text(textLabel);
 
             // Create tag.
             var tag = $('<li></li>')
@@ -444,7 +450,6 @@
 
             // Unless options.singleField is set, each tag has a hidden input field inline.
             if (!this.options.singleField) {
-                var escapedValue = label.html();
                 tag.append('<input type="hidden" style="display:none;" value="' + escapedValue + '" name="' + this.options.fieldName + '" />');
             }
 
